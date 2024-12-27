@@ -22,6 +22,8 @@ class bank
 		void atm_management();
 		void new_user();
 		void already_user();
+		void deposite();
+		void withdraw();
 };
 	void bank::menu() 
 	{
@@ -93,7 +95,7 @@ class bank
 		cout<<"1. New User"<<endl;
 		cout<<"2. ALready user"<<endl;
 		cout<<"3. Deposite option"<<endl;
-		cout<<"4. Deposite option"<<endl;
+		cout<<"4. Withdraw option"<<endl;
 		cout<<"5. Transfer option"<<endl;
 		cout<<"6. Payment option"<<endl;
 		cout<<"7. Search user record"<<endl;
@@ -113,8 +115,10 @@ class bank
 				already_user();
 				break;
 			case 3:
+				deposite();
 				break;
 			case 4:
+				withdraw();
 				break;
 			case 5:
 				break;
@@ -228,7 +232,7 @@ class bank
 		string Test_id;
 		int found = 0;
 		cout<<"\t\t\t\t Already user account details"<<endl;
-		file.open("bank.tst", ios::in);
+		file.open("bank.txt", ios::in);
 		if(!file) {
 			cout<<"\t\t\t\t File opening error"<<endl;
 		}
@@ -254,7 +258,41 @@ class bank
 		}
 	}
 	
-	
+	void bank::deposite() {
+		fstream file;
+		fstream fileUpdated;
+		string Test_id;
+		int found = 0;
+		system("cls");
+		cout<<"\t\t\t\t Money deposite portal"<<endl;
+		cout<<endl;
+		file.open("bank.txt", ios::in);
+		if(!file) {
+			cout<<"\t\t\t\t File opening error"<<endl;
+		}
+		else {
+			cout<<"\t\t\t\t Please enter user details"<<endl;
+			cout<<"Enter user ID: ";
+			cin>>Test_id;
+			fileUpdated("bank1.txt",ios)
+			file>>id>>name>>FName>>address>>pin>>pass>>phone>>balance;
+			while(!file.eof()) {
+				if(Test_id == id) {
+					system("cls");
+					cout<<"\t\t\t\t User account Details"<<endl;
+					cout<<"User ID: "<<id<<endl;
+					cout<<"Pin Code: "<<pin<<endl;
+					cout<<"Password: "<<pass<<endl;
+					found++;
+				}
+				file>>id>>name>>FName>>address>>pin>>pass>>phone>>balance;
+			}
+			file.close();
+			if(found == 0) {
+				cout<<"User ID did'nt exist!";
+			}
+		}
+	}
 	
 	
 main() {
