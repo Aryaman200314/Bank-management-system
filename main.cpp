@@ -24,6 +24,7 @@ class bank
 		void already_user();
 		void deposite();
 		void withdraw();
+		void transfer_amount();
 };
 	void bank::menu() 
 	{
@@ -121,6 +122,7 @@ class bank
 				withdraw();
 				break;
 			case 5:
+				transfer_amount();
 				break;
 			case 6:
 				break;
@@ -247,6 +249,7 @@ class bank
 					cout<<"User ID: "<<id<<endl;
 					cout<<"Pin Code: "<<pin<<endl;
 					cout<<"Password: "<<pass<<endl;
+					cout<<"Balance: "<<balance<<endl;
 					found++;
 				}
 				file>>id>>name>>FName>>address>>pin>>pass>>phone>>balance;
@@ -258,10 +261,65 @@ class bank
 		}
 	}
 	
+	void bank::withdraw() {
+		fstream file;
+		fstream fileUpdated;
+		string Test_id;
+		float with;
+		int found = 0;
+		system("cls");
+		cout<<"\t\t\t\t Money withdraw portal"<<endl;
+		cout<<endl;
+		file.open("bank.txt", ios::in);
+		if(!file) {
+			cout<<"\t\t\t\t File opening error"<<endl;
+		}
+		else {
+			cout<<"\t\t\t\t Please enter user details"<<endl;
+			cout<<"Enter user ID: ";
+			cin>>Test_id;
+			fileUpdated.open("bank1.txt",ios::app|ios::out);
+			file>>id>>name>>FName>>address>>pin>>pass>>phone>>balance;
+			while(!file.eof()) {
+				if(Test_id == id) {
+					system("cls");
+					cout<<"\t\t\t\t User account Details for withdrawal"<<endl;
+					cout<<"Enter amount: ";
+					cin>>with;
+					if(with <= balance) {
+					balance = balance - with;
+					fileUpdated<<" "<<id<<" "<<name<<" "<<FName<<" "<<address<<" "<<pin<<" "<<pass<<" "<<phone<<" "<<balance<<endl;
+					found++;
+					
+					cout<<"\t\t\t\t Amout deducted: "<<with<<endl;
+				}
+				else {
+					fileUpdated<<" "<<id<<" "<<name<<" "<<FName<<" "<<address<<" "<<pin<<" "<<pass<<" "<<phone<<" "<<balance<<endl;
+					cout<<" \t\t\t Your current balance is less that the withdrawal amount"<<endl;
+					cout<<"Your current balance is:"<<balance<<endl;
+				}
+				found++;
+				}
+				else {
+					fileUpdated<<" "<<id<<" "<<name<<" "<<FName<<" "<<address<<" "<<pin<<" "<<pass<<" "<<phone<<" "<<balance<<endl;
+				}
+				file>>id>>name>>FName>>address>>pin>>pass>>phone>>balance;
+			}
+			file.close();
+			fileUpdated.close();
+			remove("bank.txt");
+			rename("bank1.txt", "bank.txt");
+			if(found == 0) {
+				cout<<"User ID did'nt exist!";
+			}
+		}
+	}
+	
 	void bank::deposite() {
 		fstream file;
 		fstream fileUpdated;
 		string Test_id;
+		float dep;
 		int found = 0;
 		system("cls");
 		cout<<"\t\t\t\t Money deposite portal"<<endl;
@@ -274,26 +332,68 @@ class bank
 			cout<<"\t\t\t\t Please enter user details"<<endl;
 			cout<<"Enter user ID: ";
 			cin>>Test_id;
-			fileUpdated("bank1.txt",ios)
+			fileUpdated.open("bank1.txt",ios::app|ios::out);
+		
 			file>>id>>name>>FName>>address>>pin>>pass>>phone>>balance;
 			while(!file.eof()) {
 				if(Test_id == id) {
 					system("cls");
 					cout<<"\t\t\t\t User account Details"<<endl;
-					cout<<"User ID: "<<id<<endl;
-					cout<<"Pin Code: "<<pin<<endl;
-					cout<<"Password: "<<pass<<endl;
+					cout<<"Enter amount: ";
+					cin>>dep;
+					balance = balance + dep;
+					fileUpdated<<" "<<id<<" "<<name<<" "<<FName<<" "<<address<<" "<<pin<<" "<<pass<<" "<<phone<<" "<<balance<<endl;
 					found++;
+					
+					cout<<"\t\t\t\t Amout added: "<<dep<<endl;
+				}
+				else {
+					fileUpdated<<" "<<id<<" "<<name<<" "<<FName<<" "<<address<<" "<<pin<<" "<<pass<<" "<<phone<<" "<<balance<<endl;
 				}
 				file>>id>>name>>FName>>address>>pin>>pass>>phone>>balance;
 			}
 			file.close();
+			fileUpdated.close();
+			remove("bank.txt");
+			rename("bank1.txt", "bank.txt");
 			if(found == 0) {
 				cout<<"User ID did'nt exist!";
 			}
 		}
 	}
 	
+	void bank::transfer_amount() {
+		fstream file, file1;
+		string Sender_ID;
+		string Receiver_ID;
+		system("cls");
+		cout<<"\t\t\t\t Transfer amount portal"<<endl;
+		file.open("bank.txt", ios::in);
+		if(!file) {
+			cout<<"File opening error";
+		}
+		else {
+			
+			cout<<"Enter sender User ID: ";
+			cin>>Sender_ID;
+			cout<<"Enter receiver User ID: ";
+			cin>>Receiver_ID;
+			file1.open("bank1.txt",ios::app|ios::out);
+			file>>id>>name>>FName>>address>>pin>>pass>>phone>>balance;
+			while(!file.eof()) {
+				if(Sender_ID == id) {
+					balance = balance - 	
+				}
+				else if(Receiver_ID == id) {
+					
+				}
+				else {
+					
+				}
+				file>>id>>name>>FName>>address>>pin>>pass>>phone>>balance;
+			}
+		}
+	}
 	
 main() {
 	bank obj;
