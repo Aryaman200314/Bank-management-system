@@ -167,7 +167,7 @@ class bank
 			case 4:
 				menu();
 			default:
-				cout<<"Invalid input please enter valid choice";
+				cout<<"Invalid input please enter val choice";
 		}
 		getch();
 		goto p;
@@ -366,6 +366,8 @@ class bank
 		fstream file, file1;
 		string Sender_ID;
 		string Receiver_ID;
+		int found = 0;
+		float amount;
 		system("cls");
 		cout<<"\t\t\t\t Transfer amount portal"<<endl;
 		file.open("bank.txt", ios::in);
@@ -378,22 +380,53 @@ class bank
 			cin>>Sender_ID;
 			cout<<"Enter receiver User ID: ";
 			cin>>Receiver_ID;
+			cout<<"Enter amout to transfer: ";
+			cin>>amount;
+		
+			file>>id>>name>>FName>>address>>pin>>pass>>phone>>balance;
+			while(!file.eof()) {
+				if(Sender_ID == id && amount >= balance) {
+					found++;
+				}
+				else if(Receiver_ID == id) {
+					found++;
+				}	
+			}
+				
+			file>>id>>name>>FName>>address>>pin>>pass>>phone>>balance;
+		}
+		file.close();
+		if(found == 2) {
+			file.open("bank.txt", ios::in);
 			file1.open("bank1.txt",ios::app|ios::out);
 			file>>id>>name>>FName>>address>>pin>>pass>>phone>>balance;
 			while(!file.eof()) {
 				if(Sender_ID == id) {
-					balance = balance - 	
+					balance = balance-amount;
+					file1<<" "<<id<<" "<<name<<" "<<FName<<" "<<address<<" "<<pin<<" "<<pass<<" "<<phone<<" "<<balance<<endl;
 				}
 				else if(Receiver_ID == id) {
-					
+					balance =balance + amount;
+					file1<<" "<<id<<" "<<name<<" "<<FName<<" "<<address<<" "<<pin<<" "<<pass<<" "<<phone<<" "<<balance<<endl;
 				}
 				else {
-					
+					file1<<" "<<id<<" "<<name<<" "<<FName<<" "<<address<<" "<<pin<<" "<<pass<<" "<<phone<<" "<<balance<<endl;
 				}
 				file>>id>>name>>FName>>address>>pin>>pass>>phone>>balance;
 			}
+			file.close();
+			file1.close();
+			remove("bank.txt");
+			rename("bank1.txt", "bank.txt");
+			cout<<"\t\t\t\t Transction complete."<<endl;
+		}
+		else {
+			cout<<"\t\t\t\t User ID note found."<<endl;
+			cout<<"\t\t\t\t OR"<<endl;
+			cout<<"\t\t\t\t Not enough balance";
 		}
 	}
+
 	
 main() {
 	bank obj;
